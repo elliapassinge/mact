@@ -1,0 +1,32 @@
+---
+version: "2"
+
+services:
+    mact-rabbit:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+            args:
+                RABBITMQ_VERSION: ${RABBITMQ_VERSION:?err}
+        restart: always
+        env_file:
+            -   ../../.env
+        networks:
+            - shared_mact
+            - proxy_network_mact
+        ports:
+            - 15672:15672
+            - 5672:5672
+        labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=proxy_network_mact"
+            - "traefik.http.routers.rabbitmq.rule=Host(`rabbitmq.mact.localhost`)"
+            - "traefik.http.routers.rabbitmq.tls=true"
+            - "traefik.http.routers.rabbitmq.entrypoints=websecure_mact"
+            - "traefik.http.services.rabbitmq.loadbalancer.server.port=15672"
+            - "Project=mact.rabbit"
+        logging:
+            driver: "json-file"
+            options:
+                max-size: '100k'
+                max-file: '20'

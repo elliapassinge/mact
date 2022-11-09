@@ -1,0 +1,26 @@
+---
+version: "2"
+
+services:
+    mact-mailcatcher:
+        image: stpaquet/alpinemailcatcher
+        ports:
+            - 1025:1025
+            - 8025:8025
+        restart: always
+        networks:
+            - shared_mact
+            - proxy_network_mact
+        labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=proxy_network_mact"
+            - "traefik.http.routers.mailcatcher.rule=Host(`mail.mact.localhost`)"
+            - "traefik.http.routers.mailcatcher.tls=true"
+            - "traefik.http.routers.mailcatcher.entrypoints=websecure_mact"
+            - "traefik.http.services.mailcatcher.loadbalancer.server.port=1080"
+            - "Project=mact.mail"
+        logging:
+            driver: "json-file"
+            options:
+                max-size: '100k'
+                max-file: '20'

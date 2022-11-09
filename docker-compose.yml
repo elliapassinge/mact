@@ -1,0 +1,38 @@
+---
+version: "2"
+
+services:
+    mact-proxy:
+        extends:
+            file: ./docker/traefik/docker-compose.yml
+            service: mact-proxy
+
+    mact-rabbit:
+        extends:
+            file: ./docker/rabbit/docker-compose.yml
+            service: mact-rabbit
+
+    mact-redis:
+        extends:
+            file: ./docker/redis/docker-compose.yml
+            service: mact-redis
+
+    mact-mailcatcher:
+        extends:
+            file: ./docker/mailcatcher/docker-compose.yml
+            service: mact-mailcatcher
+
+    mact-php:
+        extends:
+            file: ./docker/php/docker-compose.yml
+            service: mact-php
+
+    mact-nginx:
+        extends:
+            file: ./docker/nginx/docker-compose.yml
+            service: mact-nginx
+networks:
+    shared_mact:
+        external: false
+    proxy_network_mact:
+        external: true
