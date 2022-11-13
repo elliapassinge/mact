@@ -1,0 +1,86 @@
+grumphp:
+    hooks_dir: ~
+    hooks_preset: local
+    git_hook_variables:
+        EXEC_GRUMPHP_COMMAND: 'docker exec mact-mact-php-1 php'
+    stop_on_failure: false
+    ignore_unstaged_changes: false
+    hide_circumvention_tip: false
+    process_timeout: 300
+    ascii:
+        failed: failed.txt
+        succeeded: succeeded.txt
+    tasks:
+        shell:
+            metadata:
+                label: "generating cache (shell)"
+                blocking: true
+                priority: 10
+            scripts:
+                - [ "-c", "bin/console" ]
+        composer:
+            metadata:
+                label: "check composer.json if needed (composer)"
+            file: ./composer.json
+            no_check_all: false
+            no_check_lock: false
+            no_check_publish: false
+            no_local_repository: false
+            with_dependencies: false
+            strict: false
+        git_blacklist:
+            metadata:
+                label: "check blacklist words (git_blacklist)"
+            keywords:
+                - "die("
+                - "var_dump()"
+                - "exit;"
+            whitelist_patterns: [ ]
+            triggered_by: [ 'php' ]
+            regexp_type: G
+        git_commit_message:
+            metadata:
+                label: "check commit message (git_commit_message)"
+            allow_empty_message: false
+            enforce_capitalized_subject: false
+            enforce_no_subject_punctuations: false
+            enforce_no_subject_trailing_period: true
+            enforce_single_lined_subject: true
+            max_body_width: 72
+            max_subject_width: 120
+            matchers:
+                Please respect commit message convention: /^(revert|feat|fix|docs|style|refactor|perf|test|chore|ci)(!)?(\(.+\))?(:)+( ).{1,50}|^Merge .*/
+            case_insensitive: false
+        phpcsfixer2:
+            metadata:
+                label: "check if all php's files are syntactically valid (phpcsfixer2)"
+            cache_file: ".php_cs.cache"
+            config: ".php-cs-fixer.dist.php"
+        phpstan:
+            metadata:
+                label: "finding errors in code (phpstan)"
+            autoload_file: "./app/autoload.php"
+            configuration: "./phpstan.neon.dist"
+            level: 1
+            force_patterns: [ ]
+            triggered_by: [ 'php' ]
+            memory_limit: "-1"
+            ignore_patterns: [ 'vendor','DoctrineMigrations', 'Fixture', 'tests', 'scripts', 'app' ]
+        phpversion:
+            metadata:
+                label: "verify php's version (phpversion)"
+            project: "8.1"
+        jsonlint:
+            metadata:
+                label: "check all json's files for syntax erros (jsonlint)"
+        yamllint:
+            metadata:
+                label: "check all yaml's files for syntax erros (yamllint)"
+        securitychecker_symfony:
+            lockfile: ./composer.lock
+            format: ~
+            run_always: true
+        phplint:
+            metadata:
+                label: "check all php's files for syntax erros (phplint)"
+            exclude: [ 'vendor' ]
