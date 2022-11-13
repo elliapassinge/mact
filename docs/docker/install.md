@@ -23,7 +23,7 @@ services:
 
 #### 2. You need to build services
 Many services needs to be builds (Rabbit, Php, Nginx) with `docker-compose build` \
-You need to copy `.env.docker.dist` to `.env` before.
+You need to copy vars in `.env.docker.dist` into `.env` before.
 
 #### 3. Start services
 `docker-compose up -d` \
