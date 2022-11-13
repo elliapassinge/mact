@@ -1,0 +1,16 @@
+http:
+  routers:
+    http-catchall:
+      rule: "hostregexp(`{host:.+}`)"
+      entryPoints:
+        - web_mact
+        - websecure_mact
+      middlewares:
+        - redirect-to-https
+      service: "httpsredirector"
+
+  services:
+    httpsredirector:
+      loadBalancer:
+        servers:
+          - url: "http://127.0.0.1:80"

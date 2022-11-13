@@ -1,0 +1,18 @@
+---
+version: "2"
+
+services:
+    mact-redis:
+        image: redis:${REDIS_VERSION:?err}-alpine${REDIS_ALPINE_VERSION}
+        env_file:
+            - ../../.env
+        restart: always
+        networks:
+            - shared_mact
+        ports:
+            - 6379:6379
+        logging:
+            driver: "json-file"
+            options:
+                max-size: '100k'
+                max-file: '20'

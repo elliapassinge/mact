@@ -1,0 +1,36 @@
+---
+version: "2"
+
+services:
+    mact-proxy:
+        image: traefik:${TRAEFIK_VERSION:?err}
+        env_file:
+            - ../../.env
+        restart: always
+        networks:
+            - shared_mact
+            - proxy_network_mact
+        ports:
+            - 80:80
+            - 443:443
+        environment:
+            - "TZ=Europe/Paris"
+        volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock:ro"
+            - "/var/log/traefik.log:/var/log/traefik.log:rw"
+            - "./config/traefik.yml:/etc/traefik/traefik.yml:ro"
+            - "./config/include.d/:/etc/traefik/dynamic/:ro"
+            - "./config/certs:/certs:ro"
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.proxy.rule=Host(`traefik.mact.localhost`)"
+            - "traefik.http.routers.proxy.service=api@internal"
+            - "traefik.http.routers.proxy.tls=true"
+            - "traefik.http.routers.proxy.entrypoints=websecure_mact"
+            - "Project=mact.proxy"
+        logging:
+            driver: "json-file"
+            options:
+                max-size: '100k'
+                max-file: '20'
+

@@ -1,0 +1,29 @@
+---
+version: "2"
+
+services:
+    mact-php:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+            args:
+                PHP_VERSION: ${PHP_VERSION:?err}
+        restart: always
+        networks:
+            - shared_mact
+            - proxy_network_mact
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        env_file:
+            - ../../.env
+        volumes:
+            - ${HOME}/.composer:/.composer
+            - /etc/localtime:/etc/localtime:ro
+            - ../../:/srv/mact:rw,cached
+        labels:
+            - "traefik.enable=false"
+        logging:
+            driver: "json-file"
+            options:
+                max-size: '100k'
+                max-file: '20'

@@ -1,0 +1,30 @@
+---
+entrypoints:
+  web_mact:
+    address: ":80"
+    forwardedHeaders:
+      insecure: true
+  websecure_mact:
+    address: ":443"
+    forwardedHeaders:
+      insecure: true
+
+api:
+  dashboard: true
+  debug: true
+  insecure: false
+
+serversTransport:
+  insecureSkipVerify: true
+
+providers:
+  docker:
+    network: "proxy_network_mact"
+    exposedByDefault: false
+    swarmMode: false
+    watch: true
+    constraints: "LabelRegex(`Project`, `mact\\..*`)"
+
+  file:
+    directory: /etc/traefik/dynamic/
+    watch: true

@@ -50,3 +50,9 @@
 
 # Embedded web-server pid file
 /.web-server-pid
+
+# Add directory docker
+docker/traefik/config/certs
+
+# env file
+.env
