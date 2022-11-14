@@ -10,6 +10,8 @@ grumphp:
     ascii:
         failed: failed.txt
         succeeded: succeeded.txt
+    parallel:
+        enabled: false
     tasks:
         shell:
             metadata:
@@ -59,9 +61,9 @@ grumphp:
         phpstan:
             metadata:
                 label: "finding errors in code (phpstan)"
-            autoload_file: "./app/autoload.php"
-            configuration: "./phpstan.neon.dist"
-            level: 1
+            autoload_file: "./vendor/autoload.php"
+            configuration: "./phpstan.neon"
+            level: 4
             force_patterns: [ ]
             triggered_by: [ 'php' ]
             memory_limit: "-1"
