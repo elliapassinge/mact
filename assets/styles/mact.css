@@ -1,5 +1,6 @@
 @import "~bootstrap";
+@import "~font-awesome";
 
 body {
-    background-color: lightgray;
+    background-color: #e7f1ff;
 }
