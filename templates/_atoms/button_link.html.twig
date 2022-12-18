@@ -1,0 +1,11 @@
+<a
+    class="btn {{ atom.class|default('') }}"
+    role="button"
+    aria-hidden="true"
+>
+    {% if atom.translate is defined %}
+        {{ atom.translate|trans({}, 'mact') }}
+    {% elseif atom.text is defined %}
+        {{ atom.text }}
+    {% endif %}
+</a>

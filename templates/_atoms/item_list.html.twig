@@ -1,0 +1,7 @@
+<li class="{{ atom.class|default('') }}">
+    {% if atom.text is defined %}
+        {{- atom.text -}}
+    {% elseif atom.link is defined%}
+        {% include '_atoms/link.html.twig' with {'atom': atom.link} %}
+    {% endif %}
+</li>

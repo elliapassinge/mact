@@ -1,0 +1,20 @@
+{% if atom.path is defined %}
+    {% set url = path(atom.path) %}
+{% elseif atom.url is defined %}
+    {% set url = atom.url %}
+{% else %}
+    {% set url = '#' %}
+{% endif %}
+
+{% apply spaceless %}
+<a class="{{ atom.class|default('') }}" href="{{ url }}" {% if atom.target is defined %}target="{{ atom.target }}"{% endif %}>
+    {% if atom.icon is defined %}
+        {% include '_atoms/icon.html.twig' with { 'icon': atom.icon } %}
+    {% endif %}
+    {% if atom.translate is defined %}
+        {{ atom.translate|trans({}, 'mact') }}
+    {% elseif atom.text is defined %}
+        {{ atom.text }}
+    {% endif %}
+</a>
+{% endapply %}
