@@ -1,6 +1,9 @@
 @import "~bootstrap";
 @import "~font-awesome";
 
+@import "_organisms/header";
+@import "_organisms/footer";
+
 body {
     background-color: #e7f1ff;
 }

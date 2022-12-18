@@ -1,8 +1,4 @@
-<li
-    {% if atom.class is defined %}
-        {{ atom.class }}
-    {% endif %}
->
+<li class="{{ atom.class|default('') }}">
     {% if atom.text is defined %}
         {{- atom.text -}}
     {% elseif atom.link is defined%}

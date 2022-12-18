@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController
 {
     #[Route('/', 'mact_home')]
-    #[Template('base.html.twig')]
+    #[Template('home.html.twig')]
     public function __invoke(): array
     {
         return [];

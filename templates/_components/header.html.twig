@@ -1,8 +1,8 @@
 <header class="p-3 mb-3 border-bottom">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="{{ path('mact_home') }}" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
-                <i class="fa fa-gratipay" aria-hidden="true"></i>
+            <a href="{{ path('mact_home') }}" class="d-flex align-items-center mb-2 mb-lg-0 text-decoration-none">
+                {% include '_atoms/icon.html.twig' with { 'icon': 'fa fa-gratipay fa-2x' } %}
             </a>
 
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
