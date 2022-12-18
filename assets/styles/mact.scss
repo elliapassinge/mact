@@ -1,0 +1,24 @@
+@import "~bootstrap";
+@import "~font-awesome";
+
+body {
+    background-color: #e7f1ff;
+}
+
+header, footer {
+  background-color: $blue-400;
+  color: $white;
+  a, i {
+    color: $white !important;
+  }
+  a{
+    .btn{
+      &-outline-primary{
+        border-color: $white;
+      }
+    }
+  }
+  i {
+    font-size: $font-size-lg;
+  }
+}

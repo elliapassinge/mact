@@ -3,5 +3,9 @@
     role="button"
     aria-hidden="true"
 >
-    {{ atom.text }}
+    {% if atom.translate is defined %}
+        {{ atom.translate|trans({}, 'mact') }}
+    {% elseif atom.text is defined %}
+        {{ atom.text }}
+    {% endif %}
 </a>
