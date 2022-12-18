@@ -1,0 +1,17 @@
+header {
+  background-color: $blue-400;
+  color: $white;
+  a, i {
+    color: $white !important;
+  }
+  a{
+    .btn{
+      &-outline-primary{
+        border-color: $white;
+      }
+    }
+  }
+  i {
+    font-size: $font-size-lg;
+  }
+}
