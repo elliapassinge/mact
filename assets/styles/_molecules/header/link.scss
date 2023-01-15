@@ -1,0 +1,8 @@
+a{
+  &.btn{
+    &-outline-primary{
+      border-color: $white;
+      color: $white;
+    }
+  }
+}
