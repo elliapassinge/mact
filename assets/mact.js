@@ -1,4 +1,5 @@
-import './styles/mact.css';
+import './styles/mact.scss';
 
+import 'bootstrap';
 // start the Stimulus application
 import './bootstrap';

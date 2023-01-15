@@ -1,0 +1,20 @@
+<header class="p-3 mb-3 border-bottom">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="{{ path('mact_home') }}" class="d-flex align-items-center mb-2 mb-lg-0 text-decoration-none">
+                {% include '_atoms/icon.html.twig' with { 'icon': 'fa fa-gratipay fa-2x' } %}
+            </a>
+
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                {% include '_elements/header/menu.html.twig' %}
+
+                {% include '_elements/header/user.html.twig' %}
+            {% else %}
+                <div class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"></div>
+
+                {% include '_elements/header/signin.html.twig' %}
+                {% include '_elements/header/login.html.twig' %}
+            {% endif %}
+        </div>
+    </div>
+</header>
