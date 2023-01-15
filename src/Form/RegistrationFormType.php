@@ -5,9 +5,13 @@ namespace Mact\Form;
 use Mact\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -17,32 +21,85 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
+            ->add('lastname', TextType::class, [
+                'label' => 'mact._form.login.lastname',
+                'translation_domain' => 'mact',
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(
+                        min: 3,
+                        max: 255,
+                        minMessage: 'mact._form._error.min_character'
+                    ),
+                ],
+            ])
+            ->add('firstname', TextType::class, [
+                'label' => 'mact._form.login.password',
+                'translation_domain' => 'mact',
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(
+                        min: 3,
+                        max: 255,
+                        minMessage: 'mact._form._error.min_character'
+                    ),
+                ],
+            ])
+            ->add('email', EmailType::class, [
+                'label' => 'mact._form.login.email',
+                'translation_domain' => 'mact',
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(),
+                    new Email(message: 'mact._form._error.email'),
+                ],
+            ])
+            ->add('plainPassword', RepeatedType::class, [
+                'required' => true,
+                'mapped' => false,
+                'type' => PasswordType::class,
+                'first_options' => [
+                    'label' => 'mact._form.login.password',
+                    'translation_domain' => 'mact',
+                    'constraints' => [
+                        new NotBlank(
+                            message: 'mact._form._error.not_blank',
+                        ),
+                        new Length(
+                            min: 3,
+                            max: 255,
+                            minMessage: 'mact._form._error.min_character'
+                        ),
+                    ],
+                ],
+                'second_options' => [
+                    'label' => 'mact._form.login.password_repeat',
+                    'translation_domain' => 'mact',
+                    'constraints' => [
+                        new NotBlank(
+                            message: 'mact._form._error.not_blank',
+                        ),
+                        new Length(
+                            min: 3,
+                            max: 255,
+                            minMessage: 'mact._form._error.min_character'
+                        ),
+                    ],
+                ],
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
+                'label' => 'mact._form.login.agree_terms',
+                'translation_domain' => 'mact',
                 'constraints' => [
-                    new IsTrue([
-                        'message' => 'You should agree to our terms.',
-                    ]),
+                    new IsTrue(
+                        message: 'mact._form._error.agree_terms',
+                    ),
                 ],
             ])
-            ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
-                'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
-            ])
+
         ;
     }
 

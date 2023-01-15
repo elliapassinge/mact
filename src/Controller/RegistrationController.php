@@ -8,8 +8,10 @@ use Mact\Form\RegistrationFormType;
 use Mact\Repository\UserRepository;
 use Mact\Security\EmailVerifier;
 use Mact\Security\LoginAuthenticator;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
@@ -29,8 +31,14 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, LoginAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
-    {
+    #[Template('register.html.twig')]
+    public function register(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        UserAuthenticatorInterface $userAuthenticator,
+        LoginAuthenticator $authenticator,
+        EntityManagerInterface $entityManager
+    ): array|RedirectResponse {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -57,16 +65,18 @@ class RegistrationController extends AbstractController
             );
             // do anything else you need here, like send an email
 
-            return $userAuthenticator->authenticateUser(
+            $userAuthenticator->authenticateUser(
                 $user,
                 $authenticator,
                 $request
             );
+
+            return $this->redirectToRoute('mact_home');
         }
 
-        return $this->render('registration/register.html.twig', [
+        return [
             'registrationForm' => $form->createView(),
-        ]);
+        ];
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
