@@ -9,8 +9,7 @@ class HomeController
 {
     #[Route('/', 'mact_home')]
     #[Template('home.html.twig')]
-    public function __invoke(): array
+    public function __invoke(): void
     {
-        return [];
     }
 }
