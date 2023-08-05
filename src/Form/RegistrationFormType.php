@@ -3,6 +3,7 @@
 namespace Mact\Form;
 
 use Mact\Entity\User;
+use Mact\Validator\Constraint\Password;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -35,7 +36,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('firstname', TextType::class, [
-                'label' => 'mact._form.login.password',
+                'label' => 'mact._form.login.firstname',
                 'translation_domain' => 'mact',
                 'required' => true,
                 'constraints' => [
@@ -87,6 +88,12 @@ class RegistrationFormType extends AbstractType
                             minMessage: 'mact._form._error.min_character'
                         ),
                     ],
+                ],
+                'constraints' => [
+                    new NotBlank(
+                        message: 'mact._form._error.not_blank',
+                    ),
+                    new Password(maxChar: 20),
                 ],
             ])
             ->add('agreeTerms', CheckboxType::class, [

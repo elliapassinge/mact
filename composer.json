@@ -91,6 +91,9 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "tests":  [
+            "vendor/symfony/phpunit-bridge/bin/simple-phpunit"
         ]
     },
     "conflict": {
