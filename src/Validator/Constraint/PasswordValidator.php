@@ -2,18 +2,16 @@
 
 namespace Mact\Validator\Constraint;
 
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
+use Webmozart\Assert\Assert;
 
 class PasswordValidator extends ConstraintValidator
 {
     public function validate(mixed $value, Constraint $constraint): void
     {
-        if (!$constraint instanceof Password) {
-            throw new UnexpectedTypeException($constraint, Password::class);
-        }
+        Assert::isInstanceOf($constraint, Password::class, 'Constraint not be a PasswordContraint');
 
         if (null === $value) {
             $this->context
@@ -51,9 +49,9 @@ class PasswordValidator extends ConstraintValidator
                 ->addViolation();
         }
 
-        if (preg_match('/[0-9]{'.$constraint->nbDigit.'}/', $value)) {
+        if (!preg_match('/[0-9]{1,'.$constraint->nbDigit.'}/', $value)) {
             $this->context
-                ->buildViolation($constraint->spaceMessage)
+                ->buildViolation($constraint->nbDigitMessage)
                 ->setTranslationDomain('mact')
                 ->addViolation();
         }

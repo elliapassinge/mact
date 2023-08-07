@@ -4,24 +4,65 @@ namespace Mact\Tests\Unit\Validator\Constraint;
 
 use Mact\Validator\Constraint\Password;
 use Mact\Validator\Constraint\PasswordValidator;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
+use Webmozart\Assert\InvalidArgumentException;
 
-class PasswordValidatorConstraint extends TestCase
+class PasswordValidatorConstraint extends ConstraintValidatorTestCase
 {
-    /**
-     * @test
-     */
-    public function acceptPassword(): void
+    protected function createValidator(): ConstraintValidatorInterface
     {
-        $constaint = new Password(maxChar: 20);
-        $validator = new PasswordValidator();
+        return new PasswordValidator();
+    }
 
-        $validator->validate('Password!', $constaint);
+    public function testItShouldBeThrowAnException(): void
+    {
+        $constraint = new NotNull();
 
-        $context = $this->getMockBuilder(ExecutionContextInterface::class)->getMock();
-        $context
-            ->expects($this->never())
-            ->method('buildViolation');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Constraint not be a PasswordContraint');
+        $this->validator->validate('myFakeString', $constraint);
+    }
+
+    /**
+     * @dataProvider invalidPasswordWithDefaultConfiguration
+     */
+    public function testItShouldBeAnInvalidPasswordWithDefaultConfiguration(string $password, string $violationMessage): void
+    {
+        $passwordContraint = new Password();
+
+        $this->expectNoValidate();
+        $this->validator->validate($password, $passwordContraint);
+
+        $context = $this->context->getValidator()->inContext($this->context);
+
+        $this->assertCount(1, $context->getViolations());
+        $this->assertEquals($violationMessage, $context->getViolations()[0]->getMessage());
+    }
+
+    public function testItShouldBeAValidPasswordWithDefaultConfiguration(): void
+    {
+        $passwordContraint = new Password();
+
+        $this->expectNoValidate();
+        $this->validator->validate('Passw0rd!', $passwordContraint);
+
+        $context = $this->context->getValidator()->inContext($this->context);
+
+        $this->assertCount(0, $context->getViolations());
+    }
+
+    public function invalidPasswordWithDefaultConfiguration(): \Generator
+    {
+        yield 'expect no lower char' => [
+            'PASSW0RD!',
+            'mact.form._error.lower',
+        ];
+
+        yield 'expect no more than 100 characters' => [
+            'ThisismyPASSW0RD!Iwouldhavemorethan25characteresforexpecthaveoneviolation',
+            'mact.form._error.maxChar',
+        ];
     }
 }
