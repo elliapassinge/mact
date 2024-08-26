@@ -1,0 +1,54 @@
+name: "Generate Cache"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    env:
+      php-version: '8.1'
+      php-extensions: xml, ctype, intl, pgsql, redis, amqp, gd, imagick
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            composer.json
+            composer.lock
+            package.json
+            yarn.lock
+
+      - name: Setup composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.php-version }}
+          extensions: ${{ env.php-extensions }}
+          tools: composer:v2
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v3
+        id: mact-composer-cache
+        with:
+          path: 'vendor'
+          key: mact-composer-${{ hashFiles('composer.lock') }}
+
+      - name: Install composer dependencies
+        if: steps.mact-composer-cache.outputs.cache-hit != 'true'
+        run: composer install --prefer-dist --no-progress --no-suggest --no-scripts --no-interaction
+
+      - name: Cache yarn node_modules
+        uses: actions/cache@v3
+        id: mact-modules-cache
+        with:
+          path: 'node_modules'
+          key: mact-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install yarn node_modules
+        if: steps.mact-composer-cache.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
