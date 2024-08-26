@@ -45,8 +45,7 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
     apt update && \
     apt install yarn
 
-
-ADD ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
 
