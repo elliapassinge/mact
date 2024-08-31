@@ -2,24 +2,23 @@ grumphp:
     hooks_dir: ~
     hooks_preset: local
     git_hook_variables:
-        EXEC_GRUMPHP_COMMAND: 'docker exec mact-mact-php-1 php'
+        EXEC_GRUMPHP_COMMAND: 'docker-compose exec mact-php php'
     stop_on_failure: false
-    ignore_unstaged_changes: false
+    ignore_unstaged_changes: true
     hide_circumvention_tip: false
     process_timeout: 300
     ascii:
         failed: failed.txt
         succeeded: succeeded.txt
     parallel:
-        enabled: false
+        enabled: true
     tasks:
         shell:
             metadata:
-                label: "generating cache (shell)"
+                label: "generating cache npyppu (shell)"
                 blocking: true
-                priority: 10
             scripts:
-                - [ "-c", "bin/console" ]
+                - [ "-c", "if [ ! -d var/cache/dev ]; then bin/console --env=dev -q; fi" ]
         composer:
             metadata:
                 label: "check composer.json if needed (composer)"

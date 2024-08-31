@@ -7,20 +7,27 @@ RUN apt-get update -y && apt-get upgrade -y
 
 RUN echo "**** Installation package initiaux ****"
 RUN apt-get install -y --no-install-recommends \
+    apt-transport-https \
+    ca-certificates \
     curl\
-    gnupg\
-    vim \
     git \
+    gnupg\
+    libicu-dev \
+    libpq-dev  \
+    libssl-dev  \
+    libxml2-dev  \
+    libzip-dev \
+    lsb-release \
+    netcat \
+    software-properties-common \
+    symfony-cli \
+    unzip \
+    vim \
     wget \
     zip \
-    symfony-cli \
-    ca-certificates \
-    apt-transport-https \
-    software-properties-common \
-    lsb-release \
-    libicu-dev \
-    unzip \
-    libssl-dev zlib1g-dev   netcat libxml2-dev libpq-dev libzip-dev
+    zlib1g-dev \
+    zsh \
+    && apt-get clean
 
 RUN pecl install apcu && \
     docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql && \
@@ -45,7 +52,11 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
     apt update && \
     apt install yarn
 
+RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
+RUN chsh -s /bin/zsh
+
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+
 RUN chmod +x /usr/local/bin/docker-entrypoint
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
 
