@@ -17,7 +17,7 @@ RUN apt-get install -y \
  libcurl4-openssl-dev \
  net-tools \
  wget \
- zip \
+ zip
 
 COPY ./sites-enabled/default.conf /etc/nginx/conf.d/default.conf
 

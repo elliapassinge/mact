@@ -1,7 +1,7 @@
 ARG PHP_VERSION
 
 FROM php:$PHP_VERSION-fpm
-ARG BASE_VERSION=8.1
+ARG BASE_VERSION=8.2.23
 RUN echo 'deb [trusted=yes] https://repo.symfony.com/apt/ /' | tee /etc/apt/sources.list.d/symfony-cli.list
 RUN apt-get update -y && apt-get upgrade -y
 
@@ -18,7 +18,7 @@ RUN apt-get install -y --no-install-recommends \
     libxml2-dev  \
     libzip-dev \
     lsb-release \
-    netcat \
+    netcat-traditional \
     software-properties-common \
     symfony-cli \
     unzip \
@@ -52,7 +52,10 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
     apt update && \
     apt install yarn
 
-RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
+RUN sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)" && \
+    echo 'alias sf="php bin/console"' >> ~/.zshrc && \
+    echo 'alias ll="ls -als"' >> ~/.zshrc \
+
 RUN chsh -s /bin/zsh
 
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint

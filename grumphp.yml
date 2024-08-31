@@ -2,7 +2,7 @@ grumphp:
     hooks_dir: ~
     hooks_preset: local
     git_hook_variables:
-        EXEC_GRUMPHP_COMMAND: 'docker-compose exec mact-php php'
+        EXEC_GRUMPHP_COMMAND: 'docker exec mact-mact-php-1 php'
     stop_on_failure: false
     ignore_unstaged_changes: true
     hide_circumvention_tip: false
