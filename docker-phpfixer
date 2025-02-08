@@ -1,2 +1,2 @@
 #!/bin/bash
-docker exec mact-mact-php-1 php /srv/mact/vendor/friendsofphp/php-cs-fixer/php-cs-fixer --config=/srv/mact/.php-cs-fixer.dist.php "$@"
+docker exec mact_mact-php_1 php /srv/mact/vendor/friendsofphp/php-cs-fixer/php-cs-fixer --config=/srv/mact/.php-cs-fixer.dist.php "$@"
