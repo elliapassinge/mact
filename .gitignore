@@ -67,3 +67,4 @@ docker/traefik/config/certs
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
