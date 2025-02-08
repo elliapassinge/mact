@@ -32,10 +32,10 @@ RUN echo 'deb [trusted=yes] https://repo.symfony.com/apt/ /' | tee /etc/apt/sour
     && apt-get clean && \
     \
     \
-    pecl install apcu && \
+    pecl install apcu xdebug && \
     docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql && \
     docker-php-ext-install -j$(nproc) zip opcache intl pdo_pgsql pgsql && \
-    docker-php-ext-enable apcu pdo_pgsql sodium && \
+    docker-php-ext-enable apcu pdo_pgsql sodium xdebug && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     \
     \
