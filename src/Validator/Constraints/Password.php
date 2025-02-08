@@ -14,6 +14,7 @@ class Password extends Constraint
     public string $nullMessage    = 'mact.form._error.null';
     public string $spaceMessage   = 'mact.form._error.space';
     public string $upperMessage   = 'mact.form._error.upper';
+    public string $specialMessage = 'mact.form._error.special';
 
     public int $maxChar;
     public int $minChar;

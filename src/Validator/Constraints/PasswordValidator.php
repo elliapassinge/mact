@@ -73,7 +73,7 @@ class PasswordValidator extends ConstraintValidator
 
         if (!preg_match('/[`~\!@#\$%\^\&\*\(\)\-_\=\+\[\{\}\]\\\|;:\'",<.>\/\?€£¥₹]+/u', $value)) {
             $this->context
-                ->buildViolation($constraint->upperMessage)
+                ->buildViolation($constraint->specialMessage)
                 ->setTranslationDomain('mact')
                 ->addViolation();
         }

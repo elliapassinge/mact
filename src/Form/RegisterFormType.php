@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 
 final class RegisterFormType extends AbstractType
 {
@@ -96,6 +97,7 @@ final class RegisterFormType extends AbstractType
                         message: 'mact._form._error.not_blank',
                     ),
                     new Password(maxChar: 20),
+                    new NotCompromisedPassword(),
                 ],
             ])
             ->add('agreeTerms', CheckboxType::class, [
