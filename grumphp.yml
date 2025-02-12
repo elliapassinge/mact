@@ -15,7 +15,7 @@ grumphp:
     tasks:
         shell:
             metadata:
-                label: "generating cache npyppu (shell)"
+                label: "generating cache (shell)"
                 blocking: true
             scripts:
                 - [ "-c", "if [ ! -d var/cache/dev ]; then bin/console --env=dev -q; fi" ]

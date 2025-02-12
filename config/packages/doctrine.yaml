@@ -12,11 +12,15 @@ doctrine:
         controller_resolver:
             auto_mapping: true
         mappings:
-            App:
+            Mact:
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/Entity'
-                prefix: 'App\Entity'
-                alias: App
+                prefix: 'Mact\Entity'
+                alias: Mact*
+        filters:
+            softdeletable:
+                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+                enabled: true
 
 when@test:
     doctrine:
