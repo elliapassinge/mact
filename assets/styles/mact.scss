@@ -1,6 +1,8 @@
 @import "~bootstrap";
 @import "~font-awesome";
 
+@import "_atoms/link";
+@import "_molecules/header/link";
 @import "_organisms/header";
 @import "_organisms/footer";
 
